@@ -6,9 +6,9 @@ const path = require('path')
 
 const responses = require('../config/responses/responses')
 
-const PushNotificationController = require('./notificationController')
-const Employee = require('../models/EmployeeSchema')
-// const avatarsJson = require('../config/avatarRef')
+//CRUD do usuario do sistema
+
+const User = require('../models/UserSchema')
 
 const OAuth2Controller = require('../oauth/controllers/OAuth2Controller')
 const OAuth2Client = require('../oauth/models/OAuth2Client')
@@ -53,24 +53,24 @@ module.exports = {
                 }               
 
 
+                console.log(req.body.password)
                 //Verifica se algum campo passado nao consta como undefined
-                if (req.body.name == undefined || req.body.email == undefined || req.body.department == undefined ||
-                    req.body.cellphone == undefined || req.body.password == undefined || req.body.registration == undefined) {
-
+                if (req.body.name == undefined || req.body.email == undefined || req.body.password == undefined ||
+                    req.body.name == '' || req.body.email == '' || req.body.password == '') {
                     return res.status(responses.BAD_REQUEST).json({
                         code: responses.BAD_REQUEST,
                         error: "invalid_body_register",
-                        error_description: "name, username, password, department, cellphone and registratin are required"
+                        error_description: "name, email and password are required"
                     })
                 }
 
 
                 //Verifica se ja existe um usuario cadastrado na base de dados via o email repassado na requisicao
-                Employee.findOne({"email" : req.body.email})
-                    .then(employee => {
+                User.findOne({"email" : req.body.email})
+                    .then(user => {
 
                         //Se o usuario foi encontrado, retorna um erro informado que ja existe cadastro
-                        if (employee){
+                        if (user){
                             return res.status(responses.BAD_REQUEST).json({
                                 code: responses.BAD_REQUEST,
                                 error:"username_invalid",
@@ -86,38 +86,42 @@ module.exports = {
                             return res.status(responses.BAD_REQUEST).json({
                                 code: responses.BAD_REQUEST,
                                 error:"email invalid",
-                                error_description: "you need a org email"
+                                error_description: "You need an authorized email."
                             })
                         }
                         
                         //separa cada nome do nome completo do usuario
-                        let namelower = req.body.name.toLowerCase()
-                        let namesplit = namelower.split(' ')
-                        let namecount = namesplit.length
+                        // let namelower = req.body.name.toLowerCase()
+                        // let namesplit = namelower.split(' ')
+                        // let namecount = namesplit.length
                     
-                        //Cria um novo usuario com base no Schema de Employee
-                        let employeedb = new Employee(req.body)
-                        employeedb.password = bcrypt.hashSync(req.body.password, 5)
-                    
+                        //Cria um novo usuario com base no Schema de User
+                        let userdb = new User(req.body)
+                        userdb.password = bcrypt.hashSync(req.body.password, 5)
+
+
+                        //Parse de data e hora 
+                        let date = new Date()
+                        let hour = date.getHours() - 4
+                        let minutes = date.getMinutes()
+
+                        let parseHour = ("0" + hour).slice(-2)
+                        let parseMinut = ("0" + minutes).slice(-2)
+
                         let metadata = {
-                            name: {
-                                firstname: namesplit[0],
-                                lastname: namesplit[(namecount - 1)],
-                                keys: namesplit
+                            account_registred: {                                
+                                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+                                hour: `${parseHour}:${parseMinut}`
                             }
                         }
                     
-                        employeedb.metadata = metadata
+                        userdb.metadata = metadata
                         
-                        //save avatar
-                        // employeedb.img = avatarsJson[2].path
-                        
-                        //Salva o novo Usuario na base de dados
-                        return employeedb.save()
+                        return userdb.save()
                     })
-                    .then(employee => {
+                    .then(user => {
                         return res.status(responses.CREATED).json({
-                            success: true, message: "funcionário criado com sucesso", data: employee
+                            success: true, message: "funcionário criado com sucesso", data: user
                         })
                     })
                     .catch(err => {
@@ -134,34 +138,26 @@ module.exports = {
         let profileId = req.user.id._id
         // let profileId = req.oauth.bearerToken.userId._id
 
-        Employee.findById(profileId)
-        .then(employee => {
+        User.findById(profileId)
+        .then(user => {
             let data = {
-                name: employee.name,
-                email: employee.email,
-                department: employee.department,
-                cellphone: employee.cellphone,
-                firebase: employee.firebase
+                name: user.name,
+                email: user.email
             }
-            // console.log(data)
             // return res.status(responses.OK).json(data)
-            return res.status(responses.OK).json(employee)
+            return res.status(responses.OK).json(data)
         })
         .catch(err => {
             return res.status(responses.BAD_REQUEST)
         })
-        // console.log(Employee)
     },
 
-    updateProfile: (req, res, next) => {        
+    updateProfile: (req, res, next) => {
         
         let profileId = req.oauth.bearerToken.userId._id
 
         if (req.body.name == undefined ||
-            req.body.email == undefined ||
-            req.body.department == undefined ||
-            req.body.registration == undefined ||
-            req.body.cellphone == undefined) {
+            req.body.email == undefined) {
             return res.status(responses.BAD_REQUEST).json({
                 code: 400,
                 error: "invalid_body_register",
@@ -169,60 +165,33 @@ module.exports = {
             });
         }
 
-        
-        Employee.findById(profileId)
-        .then(employee => {
+        //Atualizando dados do usuario filtrando pelo ID 
+        User.findById(profileId)
+        .then(user => {
             
-            employee.name = req.body.name
-            employee.department = req.body.department
-            employee.cellphone = req.body.cellphone
-            employee.registration = req.body.registration
-            employee.img = req.body.img
-            employee.support = req.body.support
-            // employee.email = req.body.email
-            // if (req.file) { //req.file armazena os dados da imagem parsiada pelo multer
+            user.name = req.body.name
 
-            //     const imageUrl = req.file.path  
-            //     //Falta incluir no input que carrega a imagem o atributo enctype="multipart/form-data" para o multer conseguir parsiar a imagem
-    
-            //     if (!employee.img) {
-            //         employee.img =  imageUrl
-            //     } else {
-            //         if (employee.img != imageUrl) {
-            //             let pathImagesFolder = path.join(__dirname,'../..', employee.img)
-            //             // console.log(pathImagesFolder)
-            //             fs.unlink(pathImagesFolder, (err) => {
-            //                 console.log(err)
-            //             })
-            //             employee.img = imageUrl
-            //         }
-            //     }
-            // }
+            let date = new Date()
+            let hour = date.getHours() - 4
+            let minutes = date.getMinutes()
 
-
-            //separa cada nome do nome completo do usuario
-            let namesplit = splitByWhitespace(req.body.name.toLowerCase())
-            let namecount = namesplit.length
-
-            let metadata = {
-                name: {
-                    firstname: namesplit[0],
-                    lastname: namesplit[(namecount - 1)],
-                    keys: namesplit
-                }
-            }
+            let parseHour = ("0" + hour).slice(-2)
+            let parseMinut = ("0" + minutes).slice(-2)
             
-            employee.metadata = metadata
+            user.updates.push({
+                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+                hour: `${parseHour}:${parseMinut}`
+            })
             
-            return employee.save();
+            return user.save();
             
         })
-        .then(employeenew => {
-            // console.log(employeenew)
+        .then(usernew => {
+            // console.log(usernew)
             return res.status(responses.OK).json({
                 success: true,
                 message: "registro atualizado com sucesso",
-                data: employeenew
+                data: usernew
             })
         })
         .catch(err => {
@@ -250,9 +219,9 @@ module.exports = {
         }
 
 
-        Employee.findById(profileId)
-        .then(employee => {
-            bcrypt.compare(currentPassword, employee.password)
+        User.findById(profileId)
+        .then(user => {
+            bcrypt.compare(currentPassword, user.password)
             .then(response => {
 
                 if (!response) {
@@ -264,20 +233,20 @@ module.exports = {
                 }
                 
 
-                employee.password = bcrypt.hashSync(newPassword, 5)
-                return employee.save();
+                user.password = bcrypt.hashSync(newPassword, 5)
+                return user.save();
             })
-            .then(employeenew => {
-                // console.log(employeenew)
-                OAuth2Controller.logout(employeenew)
+            .then(usernew => {
+                // console.log(usernew)
+                OAuth2Controller.logout(usernew)
                 return res.status(responses.OK).json({
                     success: true,
                     message: "registro atualizado com sucesso",
-                    data: employeenew
+                    data: usernew
                 })
             })
-            // employee.password = bcrypt.hashSync(req.body.password, 5)
-            // return employee.save();
+            // user.password = bcrypt.hashSync(req.body.password, 5)
+            // return user.save();
         })
         .catch(err => {
             console.log(err)
@@ -291,5 +260,3 @@ module.exports = {
     }
     
 }
-
-
