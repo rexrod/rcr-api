@@ -3,6 +3,9 @@ Segue as atualizações que conseguimos no mês de janeiro.
 
 # LUPA V1
 
+## v0.0.3
+- Incluindo arquivo config do gitlab-ci
+
 ## v0.0.2
 - Criando os controladores de Usuario
 - Criando modelo de Usuario
