@@ -5,6 +5,9 @@ Segue as atualizações que conseguimos no mês de janeiro.
 
 ## v0.0.3
 - Incluindo arquivo config do gitlab-ci
+- Implementando controladores de transportes e trackers
+- Salvando dados de longitude e latitude de um tracker
+- Organizando a estrutura de pastas no controller
 
 ## v0.0.2
 - Criando os controladores de Usuario

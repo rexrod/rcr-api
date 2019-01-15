@@ -4,14 +4,14 @@ const basicauth = require('basic-auth')
 const fs = require('fs')
 const path = require('path')
 
-const responses = require('../config/responses/responses')
+const responses = require('../../config/responses/responses')
 
 //CRUD do usuario do sistema
 
-const User = require('../models/UserSchema')
+const User = require('../../models/UserSchema')
 
-const OAuth2Controller = require('../oauth/controllers/OAuth2Controller')
-const OAuth2Client = require('../oauth/models/OAuth2Client')
+const OAuth2Controller = require('../../oauth/controllers/OAuth2Controller')
+const OAuth2Client = require('../../oauth/models/OAuth2Client')
 
 
 module.exports = {

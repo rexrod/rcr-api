@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path')
 const clients = require('../config/import.json');
 const OAuth2Client = require('../oauth/models/OAuth2Client')
-const responses = require('../config/responses/responses')
+const responses = require('./responses/responses')
 
 module.exports = {
   importClients: (req, res, next) => {

@@ -3,7 +3,7 @@ const mqtt = require('mqtt')
 // const client  = mqtt.connect('mqtt://broker.mqttdashboard.com')
 const client  = mqtt.connect('mqtt://iot.eclipse.org')
 
-const trackerController = require('../controllers/trackingController')
+const trackerController = require('../controllers/tracker/trackingController')
 
 client.on('connect', (err) => {
     console.log('MQTT connected')  

@@ -8,9 +8,9 @@ const authRoutes = require('../routes/authRoutes')
 
 const oauthserver = require('oauth2-server')
 const OAuth2Controller = require('../oauth/controllers/OAuth2Controller')
-const UserController = require('../controllers/userController')
+const UserController = require('../controllers/user/userController')
 
-require('./database')()
+require('./data-base/database')()
 require('./mqtt-client')
 
 module.exports = function () {
