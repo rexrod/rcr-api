@@ -55,6 +55,7 @@ module.exports = {
         let trackerId = req.params.id
         
         Tracker.findById(trackerId)
+        .populate('vehicle')
         .then(tracker => {
             return res.status(200).json({
                 success: true, message: 'tracker carregado', data: tracker

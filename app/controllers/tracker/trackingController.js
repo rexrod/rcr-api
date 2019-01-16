@@ -5,8 +5,7 @@ const Transport = require('../../models/TrackedRoutes')
 
 module.exports = {
     routes: (data) => {
-        // console.log(data)
-
+        
         let dataTracker = {
             id: data.id,
             lat: data.lat,
@@ -16,13 +15,16 @@ module.exports = {
         Tracker.findOne({serialKey : dataTracker.id})
         .then(tracker => {
 
-            Transport.findOne({tracker : tracker._id})
+            Transport.findById(tracker.vehicle)
             .then(transport => {
-                console.log(transport)
+                // console.log(transport)
                 transport.coordinates.push({
-                    lat: dataTracker.lat, 
-                    long: dataTracker.long,
-                    date: new Date()
+                    tracker: dataTracker.id,
+                    date: new Date(),
+                    coords: {
+                        lat: dataTracker.lat, 
+                        long: dataTracker.long,
+                    }
                 })
                 return transport.save()
             })
@@ -34,22 +36,5 @@ module.exports = {
                 code: 400, error: "invalid_insert", error_description: "erro ao inserir o dado na base"
             })
         })
-        // Tracker.findOne({serialKey : dataTracker.id})
-        // .then(tracker => {
-        //     console.log(tracker)
-        //     tracker.coordinates.push({
-        //         lat: dataTracker.lat, 
-        //         long: dataTracker.long,
-        //         date: new Date()
-        //     })
-        //     return tracker.save()
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        //     return res.status(400).json({
-        //         code: 400, error: "invalid_insert", error_description: "erro ao inserir o dado na base"
-        //     })
-        // })
-
     }
 }

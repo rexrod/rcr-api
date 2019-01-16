@@ -98,6 +98,7 @@ module.exports = {
         let transportId = req.params.id
 
         Transport.findById(transportId)
+        .populate('tracker')
         .then(transport => {
             return res.status(200).json({
                 success: true, message: 'transporte carregado', data: transport
