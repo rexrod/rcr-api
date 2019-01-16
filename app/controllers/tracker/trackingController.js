@@ -1,4 +1,6 @@
 //Vai manipular os dados de um tracker ja cadastrado
+//Recebe os dados, identifica o tracker enderecado dentro dos dados
+//Salva os dados de GPS no veiculo vinculado ao tracker filtrado.
 
 const Tracker = require('../../models/Trackers')
 const Transport = require('../../models/TrackedRoutes')

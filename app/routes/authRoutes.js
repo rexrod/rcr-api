@@ -20,7 +20,8 @@ router.post('/v1/transports/registertransport', trackedTransportsController.regi
 
 router.get('/v1/trackers/alltrackers', trackersController.getAllTrackers)
 router.get('/v1/trackers/:id', trackersController.getTracker)
-// router.post('/v1/trackers/:id', trackersController.linkTrackerToVehicle)
 router.post('/v1/trackers/registertracker', trackersController.registerTrackers)
+router.put('/v1/trackers/:id', trackersController.updateTrackers)
+router.delete('/v1/trackers/:id', trackersController.deleteTrackers)
 
 module.exports = router

@@ -56,11 +56,12 @@ module.exports = {
                 console.log(req.body.password)
                 //Verifica se algum campo passado nao consta como undefined
                 if (req.body.name == undefined || req.body.email == undefined || req.body.password == undefined ||
-                    req.body.name == '' || req.body.email == '' || req.body.password == '') {
+                    req.body.registration == undefined || req.body.name == '' || req.body.email == '' || req.body.password == '' ||
+                    req.body.registration == '') {
                     return res.status(responses.BAD_REQUEST).json({
                         code: responses.BAD_REQUEST,
                         error: "invalid_body_register",
-                        error_description: "name, email and password are required"
+                        error_description: "name, email, password and registration are required"
                     })
                 }
 

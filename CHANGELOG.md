@@ -3,6 +3,10 @@ Segue as atualizações que conseguimos no mês de janeiro.
 
 # LUPA V1
 
+## v0.0.4
+- Vinculando tracker a transports e transports a trackers
+- Salvando os dados de GPS do tracker no veiculo cadastrado com o tracker correspondente
+
 ## v0.0.3
 - Incluindo arquivo config do gitlab-ci
 - Implementando controladores de transportes e trackers
