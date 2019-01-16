@@ -7,6 +7,7 @@ const Routes = new Schema({
     capacity: {type: String, required: true},
     vehiclePlate: { type: String, required: true },
     tracker: {type: Schema.Types.ObjectId, ref: 'Trackersv1'},
+    coordinates: {type: Array},
     thirdCompany: {type: String},
     metadata: {type: Object}
 

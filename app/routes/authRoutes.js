@@ -13,12 +13,14 @@ router.put('/v1/user/password', userController.updatePassword)
 
 router.get('/v1/transports/alltransports', trackedTransportsController.getAllTransports)
 router.get('/v1/transports/:id', trackedTransportsController.getTransport)
+router.put('/v1/transports/:id', trackedTransportsController.linkTrackerToVehicle)
 router.post('/v1/transports/registertransport', trackedTransportsController.registerTransport)
 
 //Trackers Routes
 
 router.get('/v1/trackers/alltrackers', trackersController.getAllTrackers)
 router.get('/v1/trackers/:id', trackersController.getTracker)
+// router.post('/v1/trackers/:id', trackersController.linkTrackerToVehicle)
 router.post('/v1/trackers/registertracker', trackersController.registerTrackers)
 
 module.exports = router

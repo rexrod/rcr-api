@@ -5,10 +5,9 @@ const Tracker = new Schema({
 
     serialKey: {type: String, required: true},
     notes: { type: String},
-    vehicle: {type: String},
+    vehicle: {type: Schema.Types.ObjectId, ref: 'Routesv1'},
     metadata: {type: Object},
-    coordinates: {type: Array},
-    route: {type: Schema.Types.ObjectId, ref: 'Routesv1'}
+    coordinates: {type: Array}
 
 }, {usePushEach: true});
 

@@ -3,7 +3,7 @@ const mqtt = require('mqtt')
 // const client  = mqtt.connect('mqtt://broker.mqttdashboard.com')
 const client  = mqtt.connect('mqtt://iot.eclipse.org')
 
-const trackerController = require('../controllers/tracker/trackingController')
+const trackingController = require('../controllers/tracker/trackingController')
 
 client.on('connect', (err) => {
     console.log('MQTT connected')  
@@ -17,7 +17,7 @@ client.on('message', (topic, message) => {
         //log message
         // console.log(JSON.parse(message.toString())) //parse da message para Json
         let data = JSON.parse(message.toString())
-        trackerController.routes(data)
+        trackingController.routes(data)
         
         //handle message to mongodb...
         // ...

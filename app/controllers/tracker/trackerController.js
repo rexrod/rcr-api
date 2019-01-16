@@ -1,6 +1,8 @@
 //CRUD dos rastreadores
 const Tracker = require('../../models/Trackers')
+const Transports = require('../../models/TrackedRoutes')
 const responses = require('../../config/responses/responses')
+const transportsController = require('../../controllers/transports/transportsController')
 
 module.exports = {
     
@@ -31,8 +33,9 @@ module.exports = {
         })
     },
 
+    
     getAllTrackers: (req, res, next) => {
-
+        
         Tracker.find()
         .then(trackers => {
             return res.status(200).json({
@@ -44,13 +47,13 @@ module.exports = {
                 code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base"
             })
         })
-
+        
     },
     
     getTracker: (req, res, next) => {
-
+        
         let trackerId = req.params.id
-
+        
         Tracker.findById(trackerId)
         .then(tracker => {
             return res.status(200).json({
@@ -64,13 +67,47 @@ module.exports = {
             })
         })
     },
-
+    
     deleteTrackers: () => {
-
+        
     },
-
+    
     updateTrackers: () => {
         
+    },
+    
+    linkVehicleToTracker: (trackerId, transportId) => {
+        // let trackerId = req.params.id
+        // let transportToLink = req.body.transportId
+
+        Tracker.findById(trackerId)
+        .then(tracker => {
+            tracker.vehicle = transportId
+            tracker.save()
+            .then(result => {
+                return {
+                    success: true, message: "veiculo cadastrado com sucesso", data: result
+                }
+            })
+        })
     }
 
+    // linkTrackerToVehicle: (req, res, next) => {
+    //     let trackerId = req.params.id
+    //     let transportToLink = req.body.transportId
+
+    //     Tracker.findById(trackerId)
+    //     .then(tracker => {
+    //         Transports.findById(transportToLink)
+    //         .then(transport => {
+    //             transport.tracker = tracker
+    //             transport.save()
+    //             .then(result => {
+    //                 return res.status(200).json({
+    //                     success: true, message: "tracker cadastrado com sucesso", data: result
+    //                 })
+    //             })
+    //         })
+    //     })
+    // },
 }
