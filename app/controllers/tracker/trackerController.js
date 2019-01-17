@@ -1,8 +1,6 @@
 //CRUD dos rastreadores
 const Tracker = require('../../models/Trackers')
-const Transports = require('../../models/TrackedRoutes')
 const responses = require('../../config/responses/responses')
-const transportsController = require('../../controllers/transports/transportsController')
 
 module.exports = {
     
@@ -38,7 +36,7 @@ module.exports = {
         Tracker.find()
         .then(trackers => {
             return res.status(200).json({
-                success: true, message: 'transportes carregados', data: trackers
+                success: true, message: 'trackers carregados', data: trackers
             })
         })
         .catch(err => {
@@ -119,30 +117,5 @@ module.exports = {
                 })
             })
         })
-    },
-    
-    linkVehicleToTracker: (serialKey, transportId) => {
-        // let trackerId = req.params.id
-        // let transportToLink = req.body.transportId
-        
-        Tracker.findOne({serialKey : serialKey})
-        .then(tracker => {
-            if(tracker.vehicle == undefined || tracker.vehicle == '') {
-                tracker.vehicle = transportId
-                tracker.save()
-                .then(result => {
-                    return {
-                        success: true, message: "veiculo cadastrado com sucesso", data: result
-                    }
-                })
-                .catch(err => console.log(err))
-            }
-            
-            return {
-                code: 400, error: "invalid_insert", error_description: "tracker ja possui veiculo vinculado"
-            }
-
-        })
-        .catch(err => console.log(err))
     }
 }

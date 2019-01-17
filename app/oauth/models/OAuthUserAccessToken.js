@@ -11,7 +11,7 @@ const OAuthUserAccessToken = new Schema({
 
 });
 
-module.exports = db.model('OAuthUserAccessToken', OAuthUserAccessToken);
+module.exports = db.model('OAuth2UserAccessToken', OAuthUserAccessToken);
 
 
 
