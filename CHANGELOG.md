@@ -3,6 +3,11 @@ Segue as atualizações que conseguimos no mês de janeiro.
 
 # LUPA V1
 
+## v0.0.5
+- melhorando a logica de save de transports e trackers
+- refatorando os controladores
+- alterando nome da colections do mongodb
+
 ## v0.0.4
 - Vinculando tracker a transports e transports a trackers
 - Salvando os dados de GPS do tracker no veiculo cadastrado com o tracker correspondente
