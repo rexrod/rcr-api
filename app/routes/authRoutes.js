@@ -3,10 +3,9 @@ const router = express.Router()
 const userController = require('../controllers/user/userController')
 const trackedTransportsController = require('../controllers/transports/transportsController')
 const trackersController = require('../controllers/tracker/trackerController')
-// const linkTrackersController = require('../controllers/linkTrackers/linkTrackersController')
 
 //Profile routes
-router.get('/v1/user/profile', userController.profile)
+router.get('/v1/user/profile', userController.getProfile)
 router.put('/v1/user/profile', userController.updateProfile)
 router.put('/v1/user/password', userController.updatePassword)
 

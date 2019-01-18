@@ -12,4 +12,4 @@ const User = new Schema({
 
 }, {usePushEach: true});
 
-module.exports = mongoose.model('Userv1', User);
+module.exports = mongoose.model('User', User);
