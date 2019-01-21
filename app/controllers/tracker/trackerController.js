@@ -95,11 +95,11 @@ exports.updateTrackers = (req, res, next) => {
 
     console.log(req.body)
 
-    Tracker.findById(trackerId)
+    Tracker.findByIdAndUpdate(trackerId)
     .then(tracker => {
         tracker.trackerModel = req.body.trackerModel
         tracker.notes = req.body.notes
-        tracker.vehicle = req.body.vehicle
+        // tracker.vehicle = req.body.vehicle
 
         return tracker.save()
     })

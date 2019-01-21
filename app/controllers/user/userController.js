@@ -136,9 +136,12 @@ exports.getProfile = (req, res, next) => {
 
     User.findById(profileId)
     .then(user => {
+        console.log(user)
         let data = {
+            id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            registration: user.registration
         }
         // return res.status(responses.OK).json(data)
         return res.status(responses.OK).json(data)
@@ -148,16 +151,39 @@ exports.getProfile = (req, res, next) => {
     })
 },
 
+exports.loadingProfiles = (req, res, next) => {
+    User.find()
+    .then(users => {
+        console.log(users)
+        let profiles = []
+
+        users.forEach(user => {
+            let data = {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                registration: user.registration
+            }
+            profiles.push(data)
+        })
+        return profiles
+    })
+    .then(profiles => {
+        return res.status(responses.OK).json(profiles)
+    })
+},
+
 exports.updateProfile = (req, res, next) => {
     
     let profileId = req.oauth.bearerToken.userId._id
 
     if (req.body.name == undefined ||
-        req.body.email == undefined) {
+        req.body.email == undefined ||
+        req.body.registration == undefined) {
         return res.status(responses.BAD_REQUEST).json({
             code: 400,
             error: "invalid_body_register",
-            error_description: "username, password and name are required"
+            error_description: "name, email and registration are required"
         });
     }
 
@@ -166,6 +192,8 @@ exports.updateProfile = (req, res, next) => {
     .then(user => {
         
         user.name = req.body.name
+        user.email = req.body.email
+        user.registration = req.body.registration
 
         let date = new Date()
         let hour = date.getHours() - 4
@@ -237,7 +265,7 @@ exports.updatePassword = (req, res, next) => {
             OAuth2Controller.logout(usernew)
             return res.status(responses.OK).json({
                 success: true,
-                message: "registro atualizado com sucesso",
+                message: "senha atualizada com sucesso",
                 data: usernew
             })
         })
@@ -253,4 +281,34 @@ exports.updatePassword = (req, res, next) => {
         })
     })
     
+},
+
+exports.deleteProfile = (req, res, next) => {
+    let profileId = req.params.id
+    let logedProfileId = req.oauth.bearerToken.userId._id
+
+    if (profileId == logedProfileId) {
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: "esse methodo so remove outros usuarios, use o autoDelete"
+        })
+    }
+
+    User.findByIdAndRemove(profileId)
+    .then(user => {
+        if (user == null) {
+            return res.status(400).json({
+                code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
+            })
+        }
+
+        return res.status(200).json({
+            success: true, message: 'usuario removido com sucesso', data: user
+        })
+    })
+    .catch(err => {
+        console.log(err.message)
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
+        })
+    })
 }

@@ -157,8 +157,40 @@ exports.linkTrackerToVehicle = (req, res, next) => {
     })
 },
 
+exports.unLinkTrackersToVehicle = (req, res, next) => {
+
+    let transportId = req.params.id
+
+    Transport.findById(transportId)
+    .then(transport => {
+        let trackerId = transport.tracker
+
+        Tracker.findById(trackerId)
+        .then(tracker => {
+            tracker.vehicle = req.body.vehicle
+            tracker.save()
+        })
+        transport.tracker = req.body.tracker
+        transport.trackerSerial = req.body.trackerSerial
+        return transport.save()
+    })
+    .then(result => {
+        return res.status(200).json({
+            success: true, message: "tracker desvinculado com sucesso", data: result
+        })
+    })
+    .catch(err => {
+        console.log(err)
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base"
+        })
+    })
+
+},
+
 exports.getAllTransports = (req, res, next) => {
     Transport.find()
+    .populate('tracker')
     .then(transports => {
         return res.status(200).json({
             success: true, message: 'transportes carregados', data: transports
