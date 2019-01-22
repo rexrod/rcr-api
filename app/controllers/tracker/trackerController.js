@@ -1,5 +1,6 @@
 //CRUD dos rastreadores
 const Tracker = require('../../models/TrackerSchema')
+const Transport = require('../../models/TransportSchema')
 const responses = require('../../config/responses/responses')
     
 exports.registerTrackers = (req, res, next) => {
@@ -77,6 +78,16 @@ exports.deleteTrackers = (req, res, next) => {
                 code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
             })
         }
+        
+        if (result.vehicle) {
+            Transport.findById(result.vehicle)
+            .then(transport => {
+                transport.tracker = req.body.tracker
+                transport.trackerSerial = req.body.trackerSerial
+                transport.save()
+            })
+        }
+        
         return res.status(200).json({
             success: true, message: 'tracker removido com sucesso', data: result
         })

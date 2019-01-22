@@ -38,6 +38,7 @@ module.exports = function () {
     refreshTokenLifetime: OAuth2Controller.JWT_REFRESH_TOKEN_EXPIRY_SECONDS // expiry time in seconds, consistent with JWT setting in model.js
   });
 
+  app.post('/v1/oauth2/token', UserController.checkStatus); //check account status
   app.post('/v1/oauth2/token', app.oauth.grant()); //login
   app.post('/v1/oauth2/register', UserController.register); //register new user
 

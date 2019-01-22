@@ -149,7 +149,7 @@ model.getUser = function (username, password, callback) {
             bcrypt.compare(password, user.password, (err, res) => {
                 
                 if (err) {
-                    console.log(err)
+                    // console.log(err)
                     callback(err, false);
                 }
 

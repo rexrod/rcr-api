@@ -10,6 +10,7 @@ router.get('/v1/user/allprofiles', userController.loadingProfiles)
 router.put('/v1/user/profile', userController.updateProfile)
 router.put('/v1/user/password', userController.updatePassword)
 router.delete('/v1/user/profile/:id', userController.deleteProfile)
+router.put('/v1/user/status/:id', userController.updateStatus)
 
 //Transports Routes
 

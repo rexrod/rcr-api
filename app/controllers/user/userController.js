@@ -47,8 +47,6 @@ exports.register = (req, res, next) => {
                 })
             }               
 
-
-            console.log(req.body.password)
             //Verifica se algum campo passado nao consta como undefined
             if (req.body.name == undefined || req.body.email == undefined || req.body.password == undefined ||
                 req.body.registration == undefined || req.body.name == '' || req.body.email == '' || req.body.password == '' ||
@@ -94,7 +92,7 @@ exports.register = (req, res, next) => {
                     //Cria um novo usuario com base no Schema de User
                     let userdb = new User(req.body)
                     userdb.password = bcrypt.hashSync(req.body.password, 5)
-
+                    userdb.status = false
 
                     //Parse de data e hora 
                     let date = new Date()
@@ -114,16 +112,16 @@ exports.register = (req, res, next) => {
                     userdb.metadata = metadata
                     
                     return userdb.save()
-                })
-                .then(user => {
-                    return res.status(responses.CREATED).json({
-                        success: true, message: "funcionário criado com sucesso", data: user
+                    .then(user => {
+                        return res.status(responses.CREATED).json({
+                            success: true, message: "funcionário criado com sucesso", data: user
+                        })
                     })
                 })
                 .catch(err => {
                     console.log(err)
-                    return res.status(responses.BAD_REQUEST).send({
-                        code: 400, error: "invalid_insert", error_description: "erro ao inserir o dado na base"
+                    return res.status(responses.BAD_REQUEST).json({
+                        code: 400, error: "invalid_insert", error_description: err.message
                     })
                 })
         })
@@ -141,7 +139,8 @@ exports.getProfile = (req, res, next) => {
             id: user._id,
             name: user.name,
             email: user.email,
-            registration: user.registration
+            registration: user.registration,
+            status: user.status
         }
         // return res.status(responses.OK).json(data)
         return res.status(responses.OK).json(data)
@@ -154,7 +153,7 @@ exports.getProfile = (req, res, next) => {
 exports.loadingProfiles = (req, res, next) => {
     User.find()
     .then(users => {
-        console.log(users)
+        // console.log(users)
         let profiles = []
 
         users.forEach(user => {
@@ -162,7 +161,8 @@ exports.loadingProfiles = (req, res, next) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                registration: user.registration
+                registration: user.registration,
+                status: user.status
             }
             profiles.push(data)
         })
@@ -204,7 +204,8 @@ exports.updateProfile = (req, res, next) => {
         
         user.updates.push({
             date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
-            hour: `${parseHour}:${parseMinut}`
+            hour: `${parseHour}:${parseMinut}`,
+            changes: 'update basic informations, name, email and registration'
         })
         
         return user.save();
@@ -258,6 +259,20 @@ exports.updatePassword = (req, res, next) => {
             
 
             user.password = bcrypt.hashSync(newPassword, 5)
+
+            let date = new Date()
+            let hour = date.getHours() - 4
+            let minutes = date.getMinutes()
+
+            let parseHour = ("0" + hour).slice(-2)
+            let parseMinut = ("0" + minutes).slice(-2)
+            
+            user.updates.push({
+                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+                hour: `${parseHour}:${parseMinut}`,
+                changes: 'update password'
+            })
+
             return user.save();
         })
         .then(usernew => {
@@ -311,4 +326,88 @@ exports.deleteProfile = (req, res, next) => {
             code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
         })
     })
+},
+
+exports.checkStatus = (req, res, next) => {
+    User.findOne({email : req.body.username})
+    .then(user => {
+        if  (!user) {
+            return res.status(400).json({
+                code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / usuario nao encontrado"
+            })
+        }
+
+        if (!user.status) {
+            return res.status(400).json({
+                code: 400, error: "invalid_insert", error_description: "usuario nao esta ativo"
+            })
+        }
+
+        next()
+    })
+},
+
+exports.updateStatus = (req, res, next) => {
+    let userId = req.params.id
+
+    User.findById(userId)
+    .then(user => {
+        if (!user.status) {
+            user.status = true
+
+            let date = new Date()
+            let hour = date.getHours() - 4
+            let minutes = date.getMinutes()
+
+            let parseHour = ("0" + hour).slice(-2)
+            let parseMinut = ("0" + minutes).slice(-2)
+            
+            user.updates.push({
+                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+                hour: `${parseHour}:${parseMinut}`,
+                changes: 'set status false to true'
+            })
+
+            user.save()
+            .then(result => {
+                return res.status(200).json({
+                    success: true,
+                    message: "registro atualizado com sucesso",
+                    data: result 
+                })
+            })
+        } else {
+            user.status = false
+
+            let date = new Date()
+            let hour = date.getHours() - 4
+            let minutes = date.getMinutes()
+
+            let parseHour = ("0" + hour).slice(-2)
+            let parseMinut = ("0" + minutes).slice(-2)
+            
+            user.updates.push({
+                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+                hour: `${parseHour}:${parseMinut}`,
+                changes: 'set status true to false'
+            })
+
+            user.save()
+            .then(result => {
+                return res.status(200).json({
+                    success: true,
+                    message: "registro atualizado com sucesso",
+                    data: result 
+                })
+            })
+        }
+    })
+    .catch(err => {
+        return res.status(responses.BAD_REQUEST).json({
+            success: false,
+            message: err,
+            data: ""
+        })
+    })
 }
+
