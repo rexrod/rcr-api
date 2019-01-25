@@ -8,6 +8,7 @@ const User = new Schema({
     registration: {type: String, index: true, unique: true, required: true},
     password: { type: String, required: true },
     status: {type: Boolean, required: true},
+    admin: {type: Boolean, required: true},
     metadata: {type: Object},
     updates: {type: Array}
 

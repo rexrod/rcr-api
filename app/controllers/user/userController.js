@@ -83,16 +83,12 @@ exports.register = (req, res, next) => {
                             error_description: "You need an authorized email."
                         })
                     }
-                    
-                    //separa cada nome do nome completo do usuario
-                    // let namelower = req.body.name.toLowerCase()
-                    // let namesplit = namelower.split(' ')
-                    // let namecount = namesplit.length
                 
                     //Cria um novo usuario com base no Schema de User
                     let userdb = new User(req.body)
                     userdb.password = bcrypt.hashSync(req.body.password, 5)
                     userdb.status = false
+                    userdb.admin = false
 
                     //Parse de data e hora 
                     let date = new Date()
@@ -114,7 +110,12 @@ exports.register = (req, res, next) => {
                     return userdb.save()
                     .then(user => {
                         return res.status(responses.CREATED).json({
-                            success: true, message: "funcionário criado com sucesso", data: user
+                            success: true, message: "funcionário criado com sucesso", data: {
+                                name : user.name,
+                                email: user.email,
+                                registration : user.registration,
+                                id: user._id
+                            }
                         })
                     })
                 })
@@ -150,29 +151,6 @@ exports.getProfile = (req, res, next) => {
     })
 },
 
-exports.loadingProfiles = (req, res, next) => {
-    User.find()
-    .then(users => {
-        // console.log(users)
-        let profiles = []
-
-        users.forEach(user => {
-            let data = {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                registration: user.registration,
-                status: user.status
-            }
-            profiles.push(data)
-        })
-        return profiles
-    })
-    .then(profiles => {
-        return res.status(responses.OK).json(profiles)
-    })
-},
-
 exports.updateProfile = (req, res, next) => {
     
     let profileId = req.oauth.bearerToken.userId._id
@@ -194,6 +172,10 @@ exports.updateProfile = (req, res, next) => {
         user.name = req.body.name
         user.email = req.body.email
         user.registration = req.body.registration
+
+        if (!user.admin) {
+            user.admin = false
+        }
 
         let date = new Date()
         let hour = date.getHours() - 4
@@ -298,34 +280,38 @@ exports.updatePassword = (req, res, next) => {
     
 },
 
-exports.deleteProfile = (req, res, next) => {
-    let profileId = req.params.id
-    let logedProfileId = req.oauth.bearerToken.userId._id
+exports.autoDeleteProfile = (req, res, next) => {
+    let profileId = req.oauth.bearerToken.userId._id
+    
+    if( req.oauth.bearerToken.userId.admin ) {
 
-    if (profileId == logedProfileId) {
         return res.status(400).json({
-            code: 400, error: "invalid_insert", error_description: "esse methodo so remove outros usuarios, use o autoDelete"
+            code: 400, error: "invalid_insert", error_description: "usuario Admin, operacao nao permitida."
         })
+
+    } else {
+
+        User.findByIdAndRemove(profileId)
+        .then(user => {
+            if (user == null) {
+                return res.status(400).json({
+                    code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
+                })
+            }
+            OAuth2Controller.logout(user)
+            return res.status(200).json({
+                success: true, message: 'usuario removido com sucesso', data: user
+            })
+        })
+        .catch(err => {
+            console.log(err.message)
+            return res.status(400).json({
+                code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
+            })
+        })
+
     }
 
-    User.findByIdAndRemove(profileId)
-    .then(user => {
-        if (user == null) {
-            return res.status(400).json({
-                code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
-            })
-        }
-
-        return res.status(200).json({
-            success: true, message: 'usuario removido com sucesso', data: user
-        })
-    })
-    .catch(err => {
-        console.log(err.message)
-        return res.status(400).json({
-            code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
-        })
-    })
 },
 
 exports.checkStatus = (req, res, next) => {
@@ -344,70 +330,6 @@ exports.checkStatus = (req, res, next) => {
         }
 
         next()
-    })
-},
-
-exports.updateStatus = (req, res, next) => {
-    let userId = req.params.id
-
-    User.findById(userId)
-    .then(user => {
-        if (!user.status) {
-            user.status = true
-
-            let date = new Date()
-            let hour = date.getHours() - 4
-            let minutes = date.getMinutes()
-
-            let parseHour = ("0" + hour).slice(-2)
-            let parseMinut = ("0" + minutes).slice(-2)
-            
-            user.updates.push({
-                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
-                hour: `${parseHour}:${parseMinut}`,
-                changes: 'set status false to true'
-            })
-
-            user.save()
-            .then(result => {
-                return res.status(200).json({
-                    success: true,
-                    message: "registro atualizado com sucesso",
-                    data: result 
-                })
-            })
-        } else {
-            user.status = false
-
-            let date = new Date()
-            let hour = date.getHours() - 4
-            let minutes = date.getMinutes()
-
-            let parseHour = ("0" + hour).slice(-2)
-            let parseMinut = ("0" + minutes).slice(-2)
-            
-            user.updates.push({
-                date:  `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
-                hour: `${parseHour}:${parseMinut}`,
-                changes: 'set status true to false'
-            })
-
-            user.save()
-            .then(result => {
-                return res.status(200).json({
-                    success: true,
-                    message: "registro atualizado com sucesso",
-                    data: result 
-                })
-            })
-        }
-    })
-    .catch(err => {
-        return res.status(responses.BAD_REQUEST).json({
-            success: false,
-            message: err,
-            data: ""
-        })
     })
 }
 

@@ -14,9 +14,11 @@ exports.routes = (data) => {
         long: data.long
     }
 
+    // console.log(data)
+
     Tracker.findOne({serialKey : dataTracker.id})
     .then(tracker => {
-        
+        // console.log(tracker)
         Transport.findById(tracker.vehicle)
         .then(transport => {
             // console.log(transport)

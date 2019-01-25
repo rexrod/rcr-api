@@ -3,17 +3,10 @@ const router = express.Router()
 const userController = require('../controllers/user/userController')
 const trackedTransportsController = require('../controllers/transports/transportsController')
 const trackersController = require('../controllers/tracker/trackerController')
+const userAdminController = require('../controllers/user/userAdminController')
 
-//Profile routes
-router.get('/v1/user/profile', userController.getProfile)
-router.get('/v1/user/allprofiles', userController.loadingProfiles)
-router.put('/v1/user/profile', userController.updateProfile)
-router.put('/v1/user/password', userController.updatePassword)
-router.delete('/v1/user/profile/:id', userController.deleteProfile)
-router.put('/v1/user/status/:id', userController.updateStatus)
 
 //Transports Routes
-
 router.get('/v1/transports/alltransports', trackedTransportsController.getAllTransports)
 router.get('/v1/transports/:id', trackedTransportsController.getTransport)
 router.post('/v1/transports/registertransport', trackedTransportsController.registerTransport)
@@ -23,12 +16,28 @@ router.put('/v1/transports/:id', trackedTransportsController.updateTransport)
 router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
 
 //Trackers Routes
-
 router.get('/v1/trackers/alltrackers', trackersController.getAllTrackers)
 router.get('/v1/trackers/:id', trackersController.getTracker)
 router.post('/v1/trackers/registertracker', trackersController.registerTrackers)
 router.put('/v1/trackers/:id', trackersController.updateTrackers)
 router.delete('/v1/trackers/:id', trackersController.deleteTrackers)
+
+//User routes
+router.get('/v1/user/profile', userController.getProfile)
+router.put('/v1/user/profile', userController.updateProfile)
+router.put('/v1/user/password', userController.updatePassword)
+router.delete('/v1/user/profile/autodelete', userController.autoDeleteProfile)   //implementar o selfDelete
+// router.get('/v1/user/allprofiles', userController.loadingProfiles)
+
+//User Admin routes
+router.get('/v1/admin/allprofiles', userAdminController.loadingProfiles)
+router.get('/v1/admin/profile', userAdminController.getProfile)
+router.get('/v1/admin/profile/:id', userAdminController.getProfile)
+router.put('/v1/admin/profile/:id', userAdminController.updateProfile)
+router.put('/v1/admin/password/:id', userAdminController.updatePassword)
+router.delete('/v1/admin/profile/:id', userAdminController.deleteProfile)
+router.put('/v1/admin/status/:id', userAdminController.updateStatus)
+
 
 
 module.exports = router
