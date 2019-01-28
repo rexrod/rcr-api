@@ -244,6 +244,13 @@ exports.updateStatus = (req, res, next) => {
                     data: result 
                 })
             })
+            .catch(err => {
+                return res.status(responses.BAD_REQUEST).json({
+                    success: false,
+                    message: err.message,
+                    data: ""
+                })
+            })
         } else {
             user.status = false
 
@@ -268,12 +275,19 @@ exports.updateStatus = (req, res, next) => {
                     data: result 
                 })
             })
+            .catch(err => {
+                return res.status(responses.BAD_REQUEST).json({
+                    success: false,
+                    message: err.message,
+                    data: ""
+                })
+            })
         }
     })
     .catch(err => {
         return res.status(responses.BAD_REQUEST).json({
             success: false,
-            message: err,
+            message: err.message,
             data: ""
         })
     })
