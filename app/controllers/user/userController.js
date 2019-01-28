@@ -141,7 +141,8 @@ exports.getProfile = (req, res, next) => {
             name: user.name,
             email: user.email,
             registration: user.registration,
-            status: user.status
+            status: user.status,
+            admin: user.admin
         }
         // return res.status(responses.OK).json(data)
         return res.status(responses.OK).json(data)
