@@ -34,6 +34,13 @@ exports.getProfile = (req, res, next) => {
     .catch(err => {
         return res.status(responses.BAD_REQUEST)
     })
+    .catch(err => {
+        console.log(err)
+        return res.status(responses.BAD_REQUEST).json({
+            success: false,
+            message: "usuário nao encontrado ou nao existe"
+        })
+    })
 },
 
 exports.loadingProfiles = (req, res, next) => {
@@ -83,7 +90,8 @@ exports.updateProfile = (req, res, next) => {
         user.registration = req.body.registration
 
         let date = new Date()
-        let hour = date.getHours() - 4
+        let hour = date.getHours()
+        // let hour = date.getHours() - 4
         let minutes = date.getMinutes()
 
         let parseHour = ("0" + hour).slice(-2)
@@ -110,8 +118,7 @@ exports.updateProfile = (req, res, next) => {
         console.log(err)
         return res.status(responses.BAD_REQUEST).json({
             success: false,
-            message: "não encontrei o usuário",
-            data: ""
+            message: err.message
         })
     })
 },
@@ -149,7 +156,8 @@ exports.updatePassword = (req, res, next) => {
             user.password = bcrypt.hashSync(newPassword, 5)
 
             let date = new Date()
-            let hour = date.getHours() - 4
+            let hour = date.getHours()
+            // let hour = date.getHours() - 4
             let minutes = date.getMinutes()
 
             let parseHour = ("0" + hour).slice(-2)
@@ -225,7 +233,8 @@ exports.updateStatus = (req, res, next) => {
             user.status = true
 
             let date = new Date()
-            let hour = date.getHours() - 4
+            let hour = date.getHours()
+            // let hour = date.getHours() - 4
             let minutes = date.getMinutes()
 
             let parseHour = ("0" + hour).slice(-2)
@@ -256,7 +265,8 @@ exports.updateStatus = (req, res, next) => {
             user.status = false
 
             let date = new Date()
-            let hour = date.getHours() - 4
+            let hour = date.getHours()
+            // let hour = date.getHours() - 4
             let minutes = date.getMinutes()
 
             let parseHour = ("0" + hour).slice(-2)

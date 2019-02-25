@@ -9,6 +9,7 @@ const Transport = new Schema({
     trackerSerial: {type: String},
     tracker: {type: Schema.Types.ObjectId, ref: 'Tracker'},
     coordinates: {type: Array},
+    routes : {type: Array},
     thirdCompany: {type: String},
     metadata: {type: Object}
 

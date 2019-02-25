@@ -68,7 +68,7 @@ exports.register = (req, res, next) => {
                         return res.status(responses.BAD_REQUEST).json({
                             code: responses.BAD_REQUEST,
                             error:"username_invalid",
-                            error_description: "username is being used"
+                            error_description: "usuario ja cadastrado"
                         })
                     }
                     
@@ -92,7 +92,8 @@ exports.register = (req, res, next) => {
 
                     //Parse de data e hora 
                     let date = new Date()
-                    let hour = date.getHours() - 4
+                    let hour = date.getHours()
+                    // let hour = date.getHours() - 4
                     let minutes = date.getMinutes()
 
                     let parseHour = ("0" + hour).slice(-2)
@@ -120,7 +121,7 @@ exports.register = (req, res, next) => {
                     })
                 })
                 .catch(err => {
-                    console.log(err)
+                    // console.log(err.message)
                     return res.status(responses.BAD_REQUEST).json({
                         code: 400, error: "invalid_insert", error_description: err.message
                     })
@@ -179,7 +180,8 @@ exports.updateProfile = (req, res, next) => {
         }
 
         let date = new Date()
-        let hour = date.getHours() - 4
+        let hour = date.getHours()
+        // let hour = date.getHours() - 4
         let minutes = date.getMinutes()
 
         let parseHour = ("0" + hour).slice(-2)
@@ -244,7 +246,8 @@ exports.updatePassword = (req, res, next) => {
             user.password = bcrypt.hashSync(newPassword, 5)
 
             let date = new Date()
-            let hour = date.getHours() - 4
+            let hour = date.getHours()
+            // let hour = date.getHours() - 4
             let minutes = date.getMinutes()
 
             let parseHour = ("0" + hour).slice(-2)

@@ -11,7 +11,7 @@ const OAuth2Controller = require('../oauth/controllers/OAuth2Controller')
 const UserController = require('../controllers/user/userController')
 
 require('./data-base/database')()
-require('./mqtt-client')
+require('../controllers/mqtt/mqtt-client')
 
 module.exports = function () {
   let app = express();

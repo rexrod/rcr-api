@@ -256,7 +256,7 @@ exports.updateTransport = (req, res, next) => {
     .then(transport => {
 
         if (!transport) {
-            const error = new Error('Transport nao encontrado')
+            const error = new Error('Transporte nao encontrado')
             throw error;
         }
         transport.type = req.body.type
@@ -268,7 +268,36 @@ exports.updateTransport = (req, res, next) => {
     })
     .then(result => {
         return res.status(200).json({
-            success: true, message: "tracker atualizado com sucesso", data: result
+            success: true, message: "Transporte atualizado com sucesso", data: result
+        })
+    })
+    .catch(err => {
+        console.log(err.message)
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: err.message
+        })
+    })
+},
+
+exports.registerRoutes = (req, res, next) => {
+    let transportId = req.params.id
+
+    // console.log(req.body)
+
+    let route = {
+        routeId: req.body.routeId,
+        date: req.body.date,
+        coordinates: req.body.coordinates
+    }
+
+    Transport.findById(transportId)
+    .then(transport => {
+        transport.routes.push(route)
+        return transport.save()
+    })
+    .then(result => {
+        return res.status(200).json({
+            success: true, message: "Transporte atualizado com sucesso", data: result
         })
     })
     .catch(err => {

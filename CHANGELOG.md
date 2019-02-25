@@ -3,6 +3,21 @@ Segue as atualizações que conseguimos no mês de janeiro.
 
 # LUPA V1
 
+## v0.0.7
+- criando CRUD de employee
+
+## v0.0.6
+- criando controlador de desvinculo de trackers e iniciando crud de usuarios
+- criando status de usuario, liberacao de conta, desvinculacao de tracker ao deletar
+- incluindo rotas, controladores de user admin,
+- tratando erro de usuario sem admin
+- incluindo campo de admin no retorno do profile
+- criando controlador de desvinculo de trackers e iniciando crud de usuarios
+- criando status de usuario, liberacao de conta, desvinculacao de tracker ao deletar
+- incluindo rotas, controladores de user admin
+- tratando erro de usuario sem admin
+- incluindo campo de admin no retorno do profile
+
 ## v0.0.5
 - melhorando a logica de save de transports e trackers
 - refatorando os controladores
