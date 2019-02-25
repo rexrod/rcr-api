@@ -191,6 +191,7 @@ exports.unLinkTrackersToVehicle = (req, res, next) => {
 exports.getAllTransports = (req, res, next) => {
     Transport.find()
     .populate('tracker')
+    .populate('routes')
     .then(transports => {
         return res.status(200).json({
             success: true, message: 'transportes carregados', data: transports
@@ -210,6 +211,7 @@ exports.getTransport = (req, res, next) => {
 
     Transport.findById(transportId)
     .populate('tracker')
+    .populate('routes.employees')
     .then(transport => {
         return res.status(200).json({
             success: true, message: 'transporte carregado', data: transport
@@ -279,31 +281,63 @@ exports.updateTransport = (req, res, next) => {
     })
 },
 
-exports.registerRoutes = (req, res, next) => {
+// exports.registerRoutes = (req, res, next) => {
+//     let transportId = req.params.id
+
+//     // console.log(req.body)
+
+//     let route = {
+//         routeId: req.body.routeId,
+//         date: req.body.date,
+//         coordinates: req.body.coordinates
+//     }
+
+//     Transport.findById(transportId)
+//     .then(transport => {
+//         transport.routes.push(route)
+//         return transport.save()
+//     })
+//     .then(result => {
+//         return res.status(200).json({
+//             success: true, message: "Transporte atualizado com sucesso", data: result
+//         })
+//     })
+//     .catch(err => {
+//         console.log(err.message)
+//         return res.status(400).json({
+//             code: 400, error: "invalid_insert", error_description: err.message
+//         })
+//     })
+// }
+
+exports.registerRoute = (req, res, next) => {
+
     let transportId = req.params.id
 
-    // console.log(req.body)
-
-    let route = {
-        routeId: req.body.routeId,
-        date: req.body.date,
-        coordinates: req.body.coordinates
+    if (req.body.employees == undefined || req.body.employees == '') {
+        return res.status(responses.BAD_REQUEST).json({
+            code: responses.BAD_REQUEST,
+            error: "invalid_body_register",
+            error_description: "Employees are required"
+        })
     }
 
+    let employees = req.body.employees
+    // let newRoute = new EmployeeRoute()
     Transport.findById(transportId)
     .then(transport => {
-        transport.routes.push(route)
+        // transport.routes = {}
+        employees.forEach(employee => {
+            console.log(transport)
+            transport.routes.employees.push(employee)
+        });
         return transport.save()
     })
     .then(result => {
+        console.log(result)
         return res.status(200).json({
-            success: true, message: "Transporte atualizado com sucesso", data: result
+            success: true, message: "rota cadastrada com sucesso", data: result
         })
     })
-    .catch(err => {
-        console.log(err.message)
-        return res.status(400).json({
-            code: 400, error: "invalid_insert", error_description: err.message
-        })
-    })
+
 }

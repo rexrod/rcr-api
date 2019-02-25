@@ -8,8 +8,12 @@ const Transport = new Schema({
     vehiclePlate: { type: String, required: true },
     trackerSerial: {type: String},
     tracker: {type: Schema.Types.ObjectId, ref: 'Tracker'},
+    routes : {
+        employees: [
+            {type: Schema.Types.ObjectId, ref: 'Employee'}
+        ]
+    },
     coordinates: {type: Array},
-    routes : {type: Object},
     thirdCompany: {type: String},
     segment: {type: String},
     description: {type: String},

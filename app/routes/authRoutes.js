@@ -5,7 +5,7 @@ const trackedTransportsController = require('../controllers/transports/transport
 const trackersController = require('../controllers/tracker/trackerController')
 const userAdminController = require('../controllers/user/userAdminController')
 const employeeController = require('../controllers/employee/employeeController')
-
+const routesController = require('../controllers/vehicleRoutes/routesController')
 
 //Transports Routes
 router.get('/v1/transports/alltransports', trackedTransportsController.getAllTransports)
@@ -15,6 +15,7 @@ router.put('/v1/transports/linktracker/:id', trackedTransportsController.linkTra
 router.put('/v1/transports/unlinktracker/:id', trackedTransportsController.unLinkTrackersToVehicle)
 router.put('/v1/transports/:id', trackedTransportsController.updateTransport)
 router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
+router.post('/v1/transports/routes/:id', trackedTransportsController.registerRoute)
 
 //Trackers Routes
 router.get('/v1/trackers/alltrackers', trackersController.getAllTrackers)
@@ -46,6 +47,9 @@ router.get('/v1/employee/allemployees', employeeController.getEmployees)
 router.get('/v1/employee/:id', employeeController.getEmployee)
 router.put('/v1/employee/:id', employeeController.updateEmployee)
 router.get('/v1/employee/disable/:id', employeeController.disableEmployee)
+
+
+//Routes routes
 
 
 module.exports = router
