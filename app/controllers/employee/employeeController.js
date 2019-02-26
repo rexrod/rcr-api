@@ -1,4 +1,5 @@
 const Employee = require('../../models/EmployeeSchema')
+const Transport = require('../../models/TransportSchema')
 const responses = require('../../config/responses/responses')
 
 exports.registerEmployee = (req, res, next) => {
@@ -137,6 +138,7 @@ exports.enableDisableEmployee = (req, res, next) => {
     .then(employee => {
 
         if (employee.status) {
+            Transport.findById()
             employee.status = false
         } else {
             employee.status = true

@@ -60,9 +60,11 @@ exports.registerTransport = (req, res, next) => {
             })
 
     } else {
-
+        console.log('salvando')
         //Salva um novo transporte sem tracker associado
         let newTransport = new Transport(req.body)
+        newTransport.routes = {}
+
         newTransport.save()
             .then(transport => {
                 return res.status(200).json({
