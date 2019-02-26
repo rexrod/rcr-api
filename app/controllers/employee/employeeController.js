@@ -136,9 +136,17 @@ exports.enableDisableEmployee = (req, res, next) => {
 
     Employee.findById(employeeId)
     .then(employee => {
-
+    
         if (employee.status) {
-            Transport.findById()
+            Transport.findById(employee._id)
+            .then(transport => {
+
+                let newRoutes = transport.routes.employees.filter(id => {
+                    return id !== employeeId
+                })
+                transport.routes.employees = newRoutes
+                transport.save()
+            })
             employee.status = false
         } else {
             employee.status = true
