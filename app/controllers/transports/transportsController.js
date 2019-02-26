@@ -63,7 +63,7 @@ exports.registerTransport = (req, res, next) => {
         console.log('salvando')
         //Salva um novo transporte sem tracker associado
         let newTransport = new Transport(req.body)
-        newTransport.routes = {}
+        // newTransport.routes = {}
 
         newTransport.save()
             .then(transport => {
@@ -193,7 +193,7 @@ exports.unLinkTrackersToVehicle = (req, res, next) => {
 exports.getAllTransports = (req, res, next) => {
     Transport.find()
         .populate('tracker')
-        .populate('routes')
+        .populate('routes.employees')
         .then(transports => {
             return res.status(200).json({
                 success: true, message: 'transportes carregados', data: transports
@@ -269,7 +269,10 @@ exports.updateTransport = (req, res, next) => {
             transport.thirdCompany = req.body.thirdCompany
             transport.segment = req.body.segment
             transport.description = req.body.description
-            transport.routes = {}
+            
+            // if (transport.routes.employees.length <= 0) {
+            //     transport.routes = ''
+            // }
 
             return transport.save()
         })
