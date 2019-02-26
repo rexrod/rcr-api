@@ -46,7 +46,7 @@ router.post('/v1/employee/register', employeeController.registerEmployee)
 router.get('/v1/employee/allemployees', employeeController.getEmployees)
 router.get('/v1/employee/:id', employeeController.getEmployee)
 router.put('/v1/employee/:id', employeeController.updateEmployee)
-router.get('/v1/employee/disable/:id', employeeController.disableEmployee)
+router.get('/v1/employee/status/:id', employeeController.enableDisableEmployee)
 
 
 //Routes routes
