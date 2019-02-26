@@ -269,6 +269,7 @@ exports.updateTransport = (req, res, next) => {
             transport.thirdCompany = req.body.thirdCompany
             transport.segment = req.body.segment
             transport.description = req.body.description
+            transport.routes = {}
 
             return transport.save()
         })
