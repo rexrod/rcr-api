@@ -45,7 +45,8 @@ exports.getEmployees = (req, res, next) => {
                 registration: employee.registration,
                 address: employee.address,
                 company: employee.company,
-                route: employee.route
+                route: employee.route,
+                coordinates: employee.coordinates
             }
 
             list.push(data)
@@ -72,7 +73,8 @@ exports.getEmployee = (req, res, next) => {
             registration: employee.registration,
             address: employee.address,
             company: employee.company,
-            route: employee.route
+            route: employee.route,
+            coordinates: employee.coordinates
         }
         
         return data
