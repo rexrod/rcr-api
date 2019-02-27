@@ -5,7 +5,6 @@ const trackedTransportsController = require('../controllers/transports/transport
 const trackersController = require('../controllers/tracker/trackerController')
 const userAdminController = require('../controllers/user/userAdminController')
 const employeeController = require('../controllers/employee/employeeController')
-const routesController = require('../controllers/vehicleRoutes/routesController')
 
 //Transports Routes
 router.get('/v1/transports/alltransports', trackedTransportsController.getAllTransports)
