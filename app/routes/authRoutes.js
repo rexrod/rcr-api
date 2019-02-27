@@ -13,7 +13,7 @@ router.post('/v1/transports/registertransport', trackedTransportsController.regi
 router.put('/v1/transports/linktracker/:id', trackedTransportsController.linkTrackerToVehicle)
 router.put('/v1/transports/unlinktracker/:id', trackedTransportsController.unLinkTrackersToVehicle)
 router.put('/v1/transports/:id', trackedTransportsController.updateTransport)
-router.get('/v1/transports/status/:id', trackedTransportsController.enableDisableTransport)
+router.put('/v1/transports/status/:id', trackedTransportsController.enableDisableTransport)
 router.post('/v1/transports/routes/:id', trackedTransportsController.registerRoute)
 router.post('/v1/transports/transferroutes/:id', trackedTransportsController.transferRoute)
 // router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
@@ -47,7 +47,7 @@ router.post('/v1/employee/register', employeeController.registerEmployee)
 router.get('/v1/employee/allemployees', employeeController.getEmployees)
 router.get('/v1/employee/:id', employeeController.getEmployee)
 router.put('/v1/employee/:id', employeeController.updateEmployee)
-router.get('/v1/employee/status/:id', employeeController.enableDisableEmployee)
+router.put('/v1/employee/status/:id', employeeController.enableDisableEmployee)
 
 
 //Routes routes
