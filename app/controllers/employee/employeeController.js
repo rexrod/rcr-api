@@ -107,6 +107,7 @@ exports.updateEmployee = (req, res, next) => {
         employee.name = req.body.name
         employee.address = req.body.address
         employee.company = req.body.company
+        employee.coordinates = req.body.coordinates
         // employee._id = req.body._id
         // employee.status = req.body.status
         // employee.registration = req.body.registration

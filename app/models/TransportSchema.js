@@ -5,7 +5,7 @@ const Transport = new Schema({
 
     type: { type: String, required: true },
     capacity: { type: String, required: true },
-    vehiclePlate: { type: String, required: true },
+    vehiclePlate: { type: String, required: true, unique: true},
     trackerSerial: { type: String },
     tracker: { type: Schema.Types.ObjectId, ref: 'Tracker' },
     routes: {
