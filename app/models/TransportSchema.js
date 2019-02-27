@@ -17,7 +17,8 @@ const Transport = new Schema({
     thirdCompany: { type: String },
     segment: { type: String },
     description: { type: String },
-    metadata: { type: Object }
+    metadata: { type: Object },
+    status: {type: Boolean, required: true}
 
 }, { usePushEach: true });
 

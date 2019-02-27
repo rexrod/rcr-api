@@ -14,8 +14,10 @@ router.post('/v1/transports/registertransport', trackedTransportsController.regi
 router.put('/v1/transports/linktracker/:id', trackedTransportsController.linkTrackerToVehicle)
 router.put('/v1/transports/unlinktracker/:id', trackedTransportsController.unLinkTrackersToVehicle)
 router.put('/v1/transports/:id', trackedTransportsController.updateTransport)
-router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
+router.get('/v1/transports/status/:id', trackedTransportsController.enableDisableTransport)
 router.post('/v1/transports/routes/:id', trackedTransportsController.registerRoute)
+router.post('/v1/transports/transferroutes/:id', trackedTransportsController.transferRoute)
+// router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
 
 //Trackers Routes
 router.get('/v1/trackers/alltrackers', trackersController.getAllTrackers)

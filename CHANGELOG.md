@@ -5,6 +5,10 @@ Segue as atualizações que conseguimos no mês de janeiro.
 
 ## v0.0.7
 - criando CRUD de employee
+- incluindo novos campos do modelo de transport
+- implementando desvinculo de funcionario na rota ao ser desativado
+- criando metodo de transferencia de rotas entre transportes
+- criando metodo de ativar/desativar transport
 
 ## v0.0.6
 - criando controlador de desvinculo de trackers e iniciando crud de usuarios

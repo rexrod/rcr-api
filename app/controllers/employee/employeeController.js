@@ -63,7 +63,7 @@ exports.getEmployee = (req, res, next) => {
     let employeeId = req.params.id
 
     Employee.findById(employeeId)
-    .populate('route', '-routes -coordinates')
+    .populate('route', '-routes -coordinates -_id -capacity')
     .then(employee => {
         let data = {
             id: employee._id,
@@ -136,18 +136,20 @@ exports.enableDisableEmployee = (req, res, next) => {
 
     Employee.findById(employeeId)
     .then(employee => {
-    
+        // console.log(employee)
         if (employee.status) {
-            Transport.findById(employee._id)
+            Transport.findById(employee.route)
             .then(transport => {
-
+                
                 let newRoutes = transport.routes.employees.filter(id => {
-                    return id !== employeeId
+                    
+                    return id.toString() !== employeeId
                 })
                 transport.routes.employees = newRoutes
                 transport.save()
             })
             employee.status = false
+            employee.route = undefined
         } else {
             employee.status = true
         }
