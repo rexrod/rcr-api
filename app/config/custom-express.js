@@ -10,8 +10,8 @@ const oauthserver = require('oauth2-server')
 const OAuth2Controller = require('../oauth/controllers/OAuth2Controller')
 const UserController = require('../controllers/user/userController')
 
-require('./data-base/database')()
-require('../controllers/mqtt/mqtt-client')
+require('./data-base/database')() // inicia a conexao com o DB
+require('../controllers/mqtt/mqtt-client') // inicia a conexao com o mqtt broker
 
 module.exports = function () {
   let app = express();
