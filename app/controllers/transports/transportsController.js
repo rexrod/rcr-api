@@ -164,6 +164,11 @@ exports.unLinkTrackersToVehicle = (req, res, next) => {
 
     Transport.findById(transportId)
         .then(transport => {
+
+            if (transport == null) {
+                throw Error;
+            }
+
             let trackerId = transport.tracker
 
             Tracker.findById(trackerId)
@@ -181,7 +186,7 @@ exports.unLinkTrackersToVehicle = (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err)
+            // console.log(err)
             return res.status(400).json({
                 code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base"
             })
@@ -214,12 +219,16 @@ exports.getTransport = (req, res, next) => {
         .populate('tracker')
         .populate('routes.employees')
         .then(transport => {
+            if (transport == null) {
+                throw Error;
+            }
+
             return res.status(200).json({
                 success: true, message: 'transporte carregado', data: transport
             })
         })
         .catch(err => {
-            console.log(err.message)
+            // console.log(err)
             return res.status(400).json({
                 code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
             })
@@ -370,8 +379,11 @@ exports.unlinkRoute = (req, res, next) => {
     Transport.findById(transportId)
     .then(transport => {
         transport.routes.employees.forEach(employee => {
-            employee.route = null
-            employee.save()
+            Employees.findById(employee)
+            .then(employee => {
+                employee.route = null
+                employee.save()
+            })
         })
         transport.routes.employees = []    
         return transport.save()         
