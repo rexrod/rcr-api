@@ -17,6 +17,8 @@ router.put('/v1/transports/status/:id', trackedTransportsController.enableDisabl
 router.post('/v1/transports/routes/:id', trackedTransportsController.registerRoute)
 router.post('/v1/transports/transferroutes/:id', trackedTransportsController.transferRoute)
 router.put('/v1/transports/unlinkroutes/:id', trackedTransportsController.unlinkRoute)
+router.put('/v1/transports/addemployee/:id', trackedTransportsController.addEmployeeOnRoute)
+router.delete('/v1/transports/removeemployee/:id', trackedTransportsController.removeEmployeeOnRoute)
 // router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
 
 //Trackers Routes

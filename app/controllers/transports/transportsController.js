@@ -446,4 +446,64 @@ exports.transferRoute = (req, res, next) => {
                 code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base"
             })
         })
+},
+
+exports.addEmployeeOnRoute = (req, res, next) => {
+
+    let transportId = req.params.id
+    let employees = req.body.employees
+
+    Transport.findById(transportId)
+    .then(transport => {
+        transport.routes.employees = []
+
+        employees.forEach(employee => {
+            Employees.findById(employee)
+                .then(employee => {
+                    // console.log(employee)
+                    employee.route = transport._id
+                    employee.save()
+                })
+            transport.routes.employees.push(employee)
+        });
+        return transport.save()
+    })
+    .then(result => {
+        console.log(result)
+        return res.status(200).json({
+            success: true, message: "rota cadastrada com sucesso", data: result
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base"
+        })
+    })
+},
+
+exports.removeEmployeeOnRoute = (req, res, next) => {
+
+    let transportId = req.params.id
+    let employeeId = req.body.employeeId
+
+    Transport.findById(transportId)
+    .then(transport => {
+        let routeUpdated = transport.routes.employees.filter(id => {
+                    
+            return id.toString() !== employeeId
+        })
+        transport.routes.employees = routeUpdated
+        return transport.save()
+    })
+    .then(result => {
+        console.log(result)
+        return res.status(200).json({
+            success: true, message: "rota atualizada com sucesso", data: result
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base"
+        })
+    })
 }
