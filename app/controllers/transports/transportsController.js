@@ -363,6 +363,27 @@ exports.registerRoute = (req, res, next) => {
 
 }
 
+exports.unlinkRoute = (req, res, next) => {
+    
+    let transportId = req.params.id
+
+    Transport.findById(transportId)
+    .then(transport => {
+        transport.routes.employees.forEach(employee => {
+            employee.route = null
+            employee.save()
+        })
+        transport.routes.employees = []    
+        return transport.save()         
+    })
+    .then(result => {
+        // console.log(result)
+        return res.status(200).json({
+            success: true, message: "rota transferida com sucesso", data: result
+        })
+    })
+},
+
 exports.transferRoute = (req, res, next) => {
 
     let transportId = req.params.id
