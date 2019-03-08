@@ -379,7 +379,7 @@ exports.unlinkRoute = (req, res, next) => {
     .then(result => {
         // console.log(result)
         return res.status(200).json({
-            success: true, message: "rota transferida com sucesso", data: result
+            success: true, message: "rota desvinculada com sucesso", data: result
         })
     })
 },
