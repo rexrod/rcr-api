@@ -271,7 +271,7 @@ exports.enableDisableTransport = (req, res, next) => {
             transport.status = true
         }
       
-        return employee.save()
+        return transport.save()
     })
     .then(disbaleTransport => {
         // console.log(disbaleTransport)
