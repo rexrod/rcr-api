@@ -1,17 +1,17 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const multer = require('multer')
 
-const dfRoutes = require('../routes/dfRoutes')
+const genericRoutes = require('../routes/genericRoutes')
 const authRoutes = require('../routes/authRoutes')
 
 
 const oauthserver = require('oauth2-server')
 const OAuth2Controller = require('../oauth/controllers/OAuth2Controller')
-const employeeController = require('../controllers/employeeController')
+const UserController = require('../controllers/user/userController')
 
-require('./database')()
+require('./data-base/database')() // inicia a conexao com o DB
+require('../controllers/mqtt/mqtt-client') // inicia a conexao com o mqtt broker
 
 module.exports = function () {
   let app = express();
@@ -25,8 +25,8 @@ module.exports = function () {
   app.use(express.static('public'));
 
 
-  //Dialogflow routes
-  app.use('/df', dfRoutes)
+  //Generic routes
+  app.use('/', genericRoutes)
 
 
   //Oauth2 
@@ -38,39 +38,18 @@ module.exports = function () {
     refreshTokenLifetime: OAuth2Controller.JWT_REFRESH_TOKEN_EXPIRY_SECONDS // expiry time in seconds, consistent with JWT setting in model.js
   });
 
-
+  app.post('/v1/oauth2/token', UserController.checkStatus); //check account status
   app.post('/v1/oauth2/token', app.oauth.grant()); //login
-  app.post('/v1/oauth2/register', employeeController.register); //register new user
+  app.post('/v1/oauth2/register', UserController.register); //register new user
 
   app.use(function (req, res, next) {
     OAuth2Controller.tokenVerify(req, res, next);
   }) //  //Check se a Assinatura válida.
   app.use(app.oauth.authorise()); // Se a assinatura é válida checar na base para obter detalhes desse token (Client, User, dentre outros).
 
-
-
-  //Multer midleware to upload profile photos
-  const imageStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'app/images')
-    },
-    filename: (req, file, cb) => {
-      let filename = file.originalname
-      let pathFileName = filename.split(' ').join('')
-      cb(null, req.user.id._id + pathFileName)
-    }
-  })
-
-  app.use(multer({
-    storage: imageStorage
-  }).single('image')) //o campo .single('image') se refere a uma unica imagem com um input com name="image".
-
-
-  // app.use(multer().single('image'))
-
   
   //Rotas protegidas pelo oauth
-  app.use('/', authRoutes)
+  app.use('/auth', authRoutes)
 
   app.use(app.oauth.errorHandler()); //Exibicao de Erros
 

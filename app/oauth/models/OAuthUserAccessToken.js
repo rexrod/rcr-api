@@ -2,7 +2,7 @@ const db = require('mongoose')
 const Schema = db.Schema;
 
 
-const OAuthEmployeeAccessToken = new Schema({
+const OAuthUserAccessToken = new Schema({
 
     access_token: {type: String, required: true},
     client_id: {type: String, required: true},
@@ -11,7 +11,7 @@ const OAuthEmployeeAccessToken = new Schema({
 
 });
 
-module.exports = db.model('OAuthEmployeeAccessToken', OAuthEmployeeAccessToken);
+module.exports = db.model('OAuth2UserAccessToken', OAuthUserAccessToken);
 
 
 

@@ -1,0 +1,16 @@
+image: node:latest
+
+stages:
+  - staging
+
+staging:
+  type: deploy
+  stage: staging
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=lupa-v1 --api-key=$HEROKU_API_KEY
+  only:
+    - developer

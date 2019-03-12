@@ -1,7 +1,7 @@
-const OAuthEmployeeAccessToken = require('../models/OAuthEmployeeAccessToken');
+const OAuthUserAccessToken = require('../models/OAuthUserAccessToken');
 const OAuth2Client = require('../models/OAuth2Client');
-// const OAuth2UserAdmin = require('../models/OAuth2Employee');
-const Employee = require('../../models/EmployeeSchema')
+
+const User = require('../../models/UserSchema')
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 // const auth = require('basic-auth');
@@ -59,21 +59,21 @@ model.generateToken = function (type, req, callback) {
 model.getAccessToken = function (bearerToken, callback) {
     console.log('GetAccessToken')
 
-    OAuthEmployeeAccessToken.findOne({ 'access_token': bearerToken }, function (err, OAuthEmployeeAccessTokenSearch) {
-        if (!OAuthEmployeeAccessTokenSearch) {
+    OAuthUserAccessToken.findOne({ 'access_token': bearerToken }, function (err, OAuthUserAccessTokenSearch) {
+        if (!OAuthUserAccessTokenSearch) {
             // console.log('deu ruim no token')
-            // console.log(OAuthEmployeeAccessTokenSearch)
+            // console.log(OAuthUserAccessTokenSearch)
             return callback();
         }
-        Employee.findById(objectId(OAuthEmployeeAccessTokenSearch.user_id._id), function (err, user) {
+        User.findById(objectId(OAuthUserAccessTokenSearch.user_id._id), function (err, user) {
             if (!user) {
                 return callback();
             }
-            if (OAuthEmployeeAccessTokenSearch) {
+            if (OAuthUserAccessTokenSearch) {
                 callback(null, {
-                    accessToken: OAuthEmployeeAccessTokenSearch.access_token,
-                    clientId: OAuthEmployeeAccessTokenSearch.client_id,
-                    expires: OAuthEmployeeAccessTokenSearch.expires,
+                    accessToken: OAuthUserAccessTokenSearch.access_token,
+                    clientId: OAuthUserAccessTokenSearch.client_id,
+                    expires: OAuthUserAccessTokenSearch.expires,
                     userId: user          
                 });
                 
@@ -122,7 +122,7 @@ model.grantTypeAllowed = function (clientId, grantType, callback) {
 
 model.saveAccessToken = function (accessToken, clientId, expires, userId, callback) {
     console.log('SaveAccessToken')
-    var token = new OAuthEmployeeAccessToken();
+    var token = new OAuthUserAccessToken();
     token.access_token = accessToken;
     token.client_id = clientId;
     token.user_id = userId;
@@ -142,14 +142,14 @@ model.saveRefreshToken = function (refreshToken, clientId, expires, userId, call
 model.getUser = function (username, password, callback) {
     console.log('GetUser')
 
-    Employee.findOne({"email" : username}, (err, user) => {
+    User.findOne({"email" : username}, (err, user) => {
         
         if (user) {
 
             bcrypt.compare(password, user.password, (err, res) => {
                 
                 if (err) {
-                    console.log(err)
+                    // console.log(err)
                     callback(err, false);
                 }
 
@@ -197,13 +197,13 @@ model.tokenVerify = function (req, res, next) {
 
 model.logout = (user) => {
 
-    OAuthEmployeeAccessToken.find({ "user_id.email" : user.email}).then(tokens => {
-        let tokenId= [];
+    OAuthUserAccessToken.find({ "user_id.email" : user.email}).then(tokens => {
+        // let tokenId= [];
         
         tokens.forEach(token => {
             // tokenId.push(token._id)
-            console.log(token._id)
-            OAuthEmployeeAccessToken.findByIdAndRemove(token._id)
+            // console.log(token._id)
+            OAuthUserAccessToken.findByIdAndRemove(token._id)
             .then(response => {
                 console.log(response)
             })
