@@ -22,4 +22,4 @@ const Transport = new Schema({
 
 }, { usePushEach: true });
 
-module.exports = mongoose.model('Transport', Transport);
+module.exports = mongoose.model('Transport-dev', Transport);
