@@ -8,6 +8,6 @@ const mqttController = require('../controllers/mqtt/mqttController')
 router.get('/v1/config/import', importController.importClients)
 
 //MQTT publisher
-// router.post('/v1/mqtt/data', mqttController.publisher)
+router.post('/v1/mqtt/data', mqttController.publisher)
 
 module.exports = router
