@@ -1,15 +1,22 @@
 //Controlador do client MQTT 
 const mqtt = require('mqtt')
+const client  = mqtt.connect('mqtt://broker.hivemq.com ')
 // const client  = mqtt.connect('mqtt://broker.mqttdashboard.com')
-const client  = mqtt.connect('mqtt://iot.eclipse.org')
+// const client  = mqtt.connect('mqtt://iot.eclipse.org')
 
 const trackingController = require('../tracker/trackingController')
 
 client.on('connect', (err) => {
-    console.log('MQTT connected')  
+    console.log('MQTT connected')
+    // console.log(err)  
     client.subscribe('gps-tracker/position')
     client.subscribe('gps-tracker/string')
+
 })
+
+// client.on('error', (error) => {
+//     console.log(error)
+// })
 
 client.on('message', (topic, message) => {
     console.log('mensagem...')
