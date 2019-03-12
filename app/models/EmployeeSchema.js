@@ -11,4 +11,4 @@ const Employee = new Schema({
     route: {type: Schema.Types.ObjectId, ref: 'Transport'}
 })
 
-module.exports = mongoose.model('Employee', Employee);
+module.exports = mongoose.model('Employee-dev', Employee);
