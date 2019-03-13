@@ -12,4 +12,4 @@ const Tracker = new Schema({
 
 }, {usePushEach: true});
 
-module.exports = mongoose.model('Tracker-dev', Tracker);
+module.exports = mongoose.model('Tracker', Tracker);
