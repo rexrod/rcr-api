@@ -14,4 +14,4 @@ const User = new Schema({
 
 }, {usePushEach: true});
 
-module.exports = mongoose.model('User-dev', User);
+module.exports = mongoose.model('User', User);
