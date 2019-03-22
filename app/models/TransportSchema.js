@@ -7,6 +7,7 @@ const Transport = new Schema({
     capacity: { type: String, required: true },
     vehiclePlate: { type: String, required: true, unique: true},
     trackerSerial: { type: String },
+    tracking: { type: Boolean },
     tracker: { type: Schema.Types.ObjectId, ref: 'Tracker' },
     routes: {
         employees: [
@@ -17,6 +18,7 @@ const Transport = new Schema({
     thirdCompany: { type: String },
     segment: { type: String },
     description: { type: String },
+    manager: { type: String },
     metadata: { type: Object },
     status: {type: Boolean, required: true}
 

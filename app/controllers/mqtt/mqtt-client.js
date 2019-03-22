@@ -22,7 +22,7 @@ client.on('message', (topic, message) => {
     console.log('mensagem...')
     if(topic === 'gps-tracker/position') {
         //log message
-        console.log(JSON.parse(message.toString())) //parse da message para Json
+        // console.log(JSON.parse(message.toString())) //parse da message para Json
         let data = JSON.parse(message.toString())
         trackingController.routes(data)
         
