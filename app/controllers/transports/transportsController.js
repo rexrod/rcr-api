@@ -288,6 +288,7 @@ exports.updateTransport = (req, res, next) => {
             transport.thirdCompany = req.body.thirdCompany
             transport.segment = req.body.segment
             transport.description = req.body.description
+            transport.manager = req.body.manager
             
             // if (transport.routes.employees.length <= 0) {
             //     transport.routes = ''
