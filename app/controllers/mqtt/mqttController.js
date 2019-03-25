@@ -3,6 +3,7 @@
 const mqtt = require('mqtt')
 // const client  = mqtt.connect('mqtt://iot.eclipse.org')
 const client  = mqtt.connect('mqtt://broker.hivemq.com ')
+// const client = mqtt.connect('ws://rcr-mqtt-broker.herokuapp.com');
 
 exports.publisher = (req, res, next) => {
     // console.log(req.body)
