@@ -40,6 +40,7 @@ exports.registerTransport = (req, res, next) => {
                 //Vincula o ID do tracker ao veiculo
                 newTransport.tracker = tracker._id
                 newTransport.status = true
+                newTransport.tracking = false
                 //Salva transport
                 newTransport.save()
                     .then(transport => {
@@ -63,6 +64,7 @@ exports.registerTransport = (req, res, next) => {
         //Salva um novo transporte sem tracker associado
         let newTransport = new Transport(req.body)
         newTransport.status = true
+        newTransport.tracking = false
 
         newTransport.save()
             .then(transport => {
@@ -234,29 +236,6 @@ exports.getTransport = (req, res, next) => {
             })
         })
 },
-
-// exports.deleteTransport = (req, res, next) => {
-
-//     let transportId = req.params.id
-
-//     Transport.findByIdAndRemove(transportId)
-//         .then(result => {
-//             if (result == null) {
-//                 return res.status(400).json({
-//                     code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
-//                 })
-//             }
-//             return res.status(200).json({
-//                 success: true, message: 'transport removido com sucesso', data: result
-//             })
-//         })
-//         .catch(err => {
-//             console.log(err.message)
-//             return res.status(400).json({
-//                 code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
-//             })
-//         })
-// },
 
 exports.enableDisableTransport = (req, res, next) => {
     
@@ -507,3 +486,27 @@ exports.removeEmployeeOnRoute = (req, res, next) => {
         })
     })
 }
+
+
+// exports.deleteTransport = (req, res, next) => {
+
+//     let transportId = req.params.id
+
+//     Transport.findByIdAndRemove(transportId)
+//         .then(result => {
+//             if (result == null) {
+//                 return res.status(400).json({
+//                     code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
+//                 })
+//             }
+//             return res.status(200).json({
+//                 success: true, message: 'transport removido com sucesso', data: result
+//             })
+//         })
+//         .catch(err => {
+//             console.log(err.message)
+//             return res.status(400).json({
+//                 code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
+//             })
+//         })
+// },

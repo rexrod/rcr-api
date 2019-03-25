@@ -59,9 +59,9 @@ exports.routes = (data) => {
 exports.sms = (transport) => {
     // console.log('chamando sms')
     
-    let msg;
-    let status = transport.tracking ? 'parou' : 'iniciou'
-    msg = `O Transporte de placa ${transport.vehiclePlate} ${status} o rastreio.`
+    // let status = transport.tracking ? 'parou' : 'iniciou'
+    let startMsg = `O Transporte de placa ${transport.vehiclePlate} iniciou o rastreio.`
+    let finishMsg = `O Transporte de placa ${transport.vehiclePlate} perdeu o sinal.`
 
     let body = {
       params:{
@@ -69,7 +69,7 @@ exports.sms = (transport) => {
         usuario: "app4point",
         senha: 25042018,
         celular: transport.manager,
-        mensagem: msg 
+        mensagem: transport.tracking ? finishMsg : startMsg 
       }
     };
     
