@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const basicauth = require('basic-auth')
 
 const responses = require('../../config/responses/responses')

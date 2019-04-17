@@ -1,7 +1,11 @@
-# Atualizações de Janeiro 2019
-Segue as atualizações que conseguimos no mês de janeiro.
+# Atualizações de Janeiro a Abril 2019
+Segue as atualizações que conseguimos no mês de Janeiro a Abril.
 
 # LUPA V1
+
+## v0.0.8
+- incluindo Dockerfile 
+- removendo as configuracoes do express da pasta config e movendo para o arquivo app.js na raiz do sistema
 
 ## v0.0.7
 - criando CRUD de employee

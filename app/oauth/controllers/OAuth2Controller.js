@@ -2,7 +2,7 @@ const OAuthUserAccessToken = require('../models/OAuthUserAccessToken');
 const OAuth2Client = require('../models/OAuth2Client');
 
 const User = require('../../models/UserSchema')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
 // const auth = require('basic-auth');
 const objectId = require('objectid')
@@ -91,7 +91,7 @@ model.getClient = function (clientId, clientSecret, callback) {
     console.log('GetClient')
     OAuth2Client.findOne({ "client_id": clientId, "client_secret": clientSecret }, function (err, OAuth2ClientSearch) {
 
-        console.log(OAuth2ClientSearch)
+        // console.log(OAuth2ClientSearch)
 
         if (err)
             return callback(err);
