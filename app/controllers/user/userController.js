@@ -73,7 +73,7 @@ exports.register = (req, res, next) => {
                     }
                     
                     //Verifica se o dominio do email esta autorizado a criar conta no sistema
-                    const emails = ['itbam.org.br', 'gmail.com', 'teste.com']
+                    const emails = ['itbam.org.br', 'gmail.com', 'teste.com', 'transire.com.br']
                     let domain = req.body.email.split('@') 
 
                     if (!emails.includes(domain[1])) {
