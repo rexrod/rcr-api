@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>RCR</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/rcr/icon-logo.png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <!--meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"-->
+  <meta http-equiv=”content-encoding” content=”gzip” />
+  <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+<link rel="stylesheet" href="styles.a17b43c43fdc4b95558f.css"></head>
+<script>
+  (function(window) {
+    if (window.location !== window.top.location) {
+      window.top.location = window.location;
+    }
+  })(this);
+</script>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+  w[l] = w[l] || [];
+  w[l].push({
+    'gtm.start':
+      new Date().getTime(), event: 'gtm.js'
+  });
+  var f = d.getElementsByTagName(s)[0],
+    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+  j.async = true;
+  j.src =
+    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+  f.parentNode.insertBefore(j, f);
+})(window, document, 'script', 'dataLayer', 'GTM-5HLZ2FP');</script>
+<!-- End Google Tag Manager -->
+<style>
+  fury-root > .background {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: #273B56; */
+    background: #FFF;
+  }
+
+  fury-root > .background > .wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+
+  @-webkit-keyframes ball-scale-multiple {
+    0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 0; }
+    5% {
+      opacity: 1; }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 0; } }
+
+  @keyframes ball-scale-multiple {
+    0% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+      opacity: 0; }
+    5% {
+      opacity: 1; }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      opacity: 0; } }
+
+  .ball-scale-multiple {
+    position: relative;
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px); }
+  .ball-scale-multiple > div:nth-child(2) {
+    -webkit-animation-delay: -0.4s;
+    animation-delay: -0.4s; }
+  .ball-scale-multiple > div:nth-child(3) {
+    -webkit-animation-delay: -0.2s;
+    animation-delay: -0.2s; }
+  .ball-scale-multiple > div {
+    /* background-color: #325B53; */
+    background-color: #fff;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    position: absolute;
+    left: -30px;
+    top: 0;
+    opacity: 0;
+    margin: 0;
+    width: 60px;
+    height: 60px;
+    -webkit-animation: ball-scale-multiple 1s 0s linear infinite;
+    animation: ball-scale-multiple 1s 0s linear infinite; }
+
+</style>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HLZ2FP"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiLybtgHpbqMWcSg5Uc0bN52Aw0AxJH20&sensor=false" async defer></script>  -->
+<fury-root>
+    <div class="background">
+      <div class="wrapper">
+        <div class="ball-scale-multiple">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+</fury-root>
+<script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"  type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"  type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.0/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://js.api.here.com/v3/3.0/mapsjs-places.js" type="text/javascript" charset="UTF-8"></script>
+<script type="text/javascript" src="runtime.c092d34e2e0feaf0b3e4.js"></script><script type="text/javascript" src="polyfills.5f6f2548ff66a4dc24b8.js"></script><script type="text/javascript" src="vendor.352735891314792bf28c.js"></script><script type="text/javascript" src="main.3148d2087efe26ef558b.js"></script></body>
+</html>
