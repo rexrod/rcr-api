@@ -114,7 +114,6 @@ exports.disableTrackers = (req, res, next) => {
         result.status = false
         result.save()
         
-        
         return res.status(200).json({
             success: true, message: 'tracker desativado com sucesso', data: result
         })
