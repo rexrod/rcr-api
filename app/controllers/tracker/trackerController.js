@@ -84,12 +84,39 @@ exports.deleteTrackers = (req, res, next) => {
             .then(transport => {
                 transport.tracker = req.body.tracker
                 transport.trackerSerial = req.body.trackerSerial
-                transport.save()
+                transport.save() 
             })
         }
         
         return res.status(200).json({
             success: true, message: 'tracker removido com sucesso', data: result
+        })
+    })
+    .catch(err => {
+        console.log(err.message)
+        return res.status(400).json({
+            code: 400, error: "invalid_insert", error_description: "erro ao carregar dados da base / dados nao encontrados"
+        })
+    })
+    
+},
+
+exports.disableTrackers = (req, res, next) => {
+    let trackerId = req.params.id
+    Tracker.findByIdAndUpdate(trackerId)
+    .then(result => {
+        if (result == null) {
+            return res.status(400).json({
+                code: 400, error: "invalid_insert", error_description: "dados ja removido ou nao existentes na base de dados"
+            })
+        }
+
+        result.status = false
+        result.save()
+        
+        
+        return res.status(200).json({
+            success: true, message: 'tracker desativado com sucesso', data: result
         })
     })
     .catch(err => {
