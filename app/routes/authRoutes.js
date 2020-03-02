@@ -23,12 +23,13 @@ router.delete('/v1/transports/removeemployee/:id', trackedTransportsController.r
 
 //Trackers Routes
 router.get('/v1/trackers/alltrackers', trackersController.getAllTrackers)
+router.get('/v1/tracker/getalltrackeativo', trackersController.getAllTrackerAtivo)
 router.get('/v1/trackers/:id', trackersController.getTracker)
 router.post('/v1/trackers/registertracker', trackersController.registerTrackers)
 router.put('/v1/trackers/:id', trackersController.updateTrackers)
 router.delete('/v1/trackers/:id', trackersController.deleteTrackers)
 router.patch('/v1/tracker/disabletrackers/:id', trackersController.disableTrackers)
-router.get('/v1/tracker/getalltrackeativo', trackersController.getAllTrackerAtivo)
+
 
 //User routes
 router.get('/v1/user/profile', userController.getProfile)
