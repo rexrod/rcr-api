@@ -499,6 +499,7 @@ exports.unlinkRoute = (req, res, next) => {
             .then(transporter => {
                 let coordinates = transporter[0].coordinates.values()
 
+
                 if (coordinates != null) {
                     transporter[0].coordinates = new Object
 
