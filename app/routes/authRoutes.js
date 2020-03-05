@@ -8,6 +8,7 @@ const employeeController = require('../controllers/employee/employeeController')
 
 //Transports Routes
 router.get('/v1/transports/alltransports', trackedTransportsController.getAllTransports)
+router.get('/v1/transports/getRota/:placa/:horainicio/:horafim', trackedTransportsController.getRota)
 router.get('/v1/transports/:id', trackedTransportsController.getTransport)
 router.post('/v1/transports/registertransport', trackedTransportsController.registerTransport)
 router.put('/v1/transports/linktracker/:id', trackedTransportsController.linkTrackerToVehicle)
@@ -19,6 +20,7 @@ router.post('/v1/transports/transferroutes/:id', trackedTransportsController.tra
 router.put('/v1/transports/unlinkroutes/:id', trackedTransportsController.unlinkRoute)
 router.put('/v1/transports/addemployee/:id', trackedTransportsController.addEmployeeOnRoute)
 router.delete('/v1/transports/removeemployee/:id', trackedTransportsController.removeEmployeeOnRoute)
+
 // router.delete('/v1/transports/:id', trackedTransportsController.deleteTransport)
 
 //Trackers Routes
