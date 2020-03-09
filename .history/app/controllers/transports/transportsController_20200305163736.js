@@ -509,10 +509,6 @@ exports.unlinkRoute = (req, res, next) => {
                     }
                 }
 
-                //if(transporter[0].coordinates[0] == null){
-                    transporter[0].coordinates.shift()
-                //}
-
                 res.status(200).json({
                     success: true, message: 'rotas', data: transporter
                 })

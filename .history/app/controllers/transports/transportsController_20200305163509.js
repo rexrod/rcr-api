@@ -499,6 +499,7 @@ exports.unlinkRoute = (req, res, next) => {
             .then(transporter => {
                 let coordinates = transporter[0].coordinates.values()
 
+
                 if (coordinates != null) {
                     transporter[0].coordinates = new Object
 
@@ -508,10 +509,6 @@ exports.unlinkRoute = (req, res, next) => {
                         }
                     }
                 }
-
-                //if(transporter[0].coordinates[0] == null){
-                    transporter[0].coordinates.shift()
-                //}
 
                 res.status(200).json({
                     success: true, message: 'rotas', data: transporter
