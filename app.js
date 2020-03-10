@@ -56,7 +56,7 @@ app.use('/auth', authRoutes)
 app.use(app.oauth.errorHandler()); //Exibicao de Erros
 
 
-app.listen(3001, () => {
+app.listen(80, () => {
 
   console.log('API-' + 'RCR-API' + '-SERVER-ON : ' + '3001' + ' in ' + new Date)
 
